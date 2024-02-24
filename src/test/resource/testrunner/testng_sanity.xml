@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Open Cart Sanity Suite" thread-count="5"
+	parallel="tests" verbose="4">
+
+	<listeners>
+		<listener
+			class-name="com.qa.democart.listeners.AnnotationTransformer" />
+		<listener
+			class-name="com.qa.democart.listeners.ExtentReportListener" />
+		<listener
+			class-name="com.qa.democart.listeners.AllureListener" />
+	</listeners>
+
+	<test name="Login Page Test_chrome90">
+		<parameter name="browser" value="chrome" />
+		<parameter name="browserversion" value="90" />
+
+		<classes>
+			<class name="com.qa.opencart.test.LoginPageTest" />
+		</classes>
+	</test>
+
+	<test name="Login Page Test_chrome93">
+		<parameter name="browser" value="chrome" />
+		<parameter name="browserversion" value="93" />
+		<classes>
+			<class name="com.qa.opencart.test.LoginPageTest" />
+		</classes>
+	</test>
+
+	<test name="Login Page Test_chrome89">
+		<parameter name="browser" value="chrome" />
+		<parameter name="browserversion" value="57" />
+		<classes>
+			<class name="com.qa.opencart.test.LoginPageTest" />
+		</classes>
+	</test>
+
+	<test name="Accounts Page Test_chrome89">
+		<parameter name="browser" value="chrome" />
+		<parameter name="browserversion" value="83" />
+		<classes>
+			<class name="com.qa.opencart.test.AccountsPageTest" />
+		</classes>
+	</test>
+
+	<test name="Accounts Page Test_chrome95">
+		<parameter name="browser" value="chrome" />
+		<parameter name="browserversion" value="95" />
+		<classes>
+			<class name="com.qa.opencart.test.AccountsPageTest" />
+		</classes>
+	</test>
+
+	<test name="Registration Page Test_chrome91">
+		<parameter name="browser" value="chrome" />
+		<parameter name="browserversion" value="91" />
+		<classes>
+			<class name="com.qa.opencart.test.RegistrationPageTest" />
+		</classes>
+	</test>
+
+</suite>
+
+
+

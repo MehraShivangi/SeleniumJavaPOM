@@ -1,22 +1,23 @@
 pipeline 
 {
     agent any
-    tools {
+    
+    tools{
         maven 'MAVEN'
-    }
+        }
 
     stages 
     {
         stage('Build') 
         {
-            steps 
+            steps
             {
-                 git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
+                 git 'https://github.com/jglick/simple-maven-project-with-tests.git'
                  sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
             post 
             {
-                success 
+                success
                 {
                     junit '**/target/surefire-reports/TEST-*.xml'
                     archiveArtifacts 'target/*.jar'
@@ -26,11 +27,20 @@ pipeline
         
         
         
-        stage('Test') {
+        stage("Deploy to QA"){
+            steps{
+                echo("deploy to qa")
+            }
+        }
+        
+        
+                
+        stage('Regression Automation Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
-                    sh "mvn clean install"
+                    sh "mvn clean test -Dsurefire.suiteXmlFiles=src/main/resources/testrunner/testng_regression.xml"
+                    
                 }
             }
         }
@@ -55,12 +65,44 @@ pipeline
             steps{
                      publishHTML([allowMissing: false,
                                   alwaysLinkToLastBuild: false, 
-                                  keepAll: false, 
-                                  reportDir: 'build', 
+                                  keepAll: true, 
+                                  reportDir: 'reports', 
                                   reportFiles: 'TestExecutionReport.html', 
-                                  reportName: 'HTML Extent Report', 
+                                  reportName: 'HTML Regression Extent Report', 
                                   reportTitles: ''])
             }
         }
+        
+        stage("Deploy to Stage"){
+            steps{
+                echo("deploy to Stage")
+            }
+        }
+        
+        stage('Sanity Automation Test') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
+                    sh "mvn clean test -Dsurefire.suiteXmlFiles=src/main/resources/testrunner/testng_sanity.xml"
+                    
+                }
+            }
+        }
+        
+        
+        
+        stage('Publish sanity Extent Report'){
+            steps{
+                     publishHTML([allowMissing: false,
+                                  alwaysLinkToLastBuild: false, 
+                                  keepAll: true, 
+                                  reportDir: 'reports', 
+                                  reportFiles: 'TestExecutionReport.html', 
+                                  reportName: 'HTML Sanity Extent Report', 
+                                  reportTitles: ''])
+            }
+        }
+        
+        
     }
 }
