@@ -29,7 +29,7 @@ pipeline
         stage('Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    git 'https://github.com/MehraShivangi/SeleniumJavaPOM'
+                    git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
                     sh "mvn clean install"
                 }
             }
