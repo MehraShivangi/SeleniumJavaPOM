@@ -11,7 +11,7 @@ pipeline
         {
             steps 
             {
-                 git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git''
+                 git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
                  sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
             post 
