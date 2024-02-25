@@ -39,7 +39,7 @@ pipeline
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
-                    sh "mvn clean test -Dsurefire.suiteXmlFiles=src/main/resources/testrunner/testng_regression.xml"
+                    sh "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resource/testrunner/testng_regression.xml"
                     
                 }
             }
@@ -83,7 +83,7 @@ pipeline
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
-                    sh "mvn clean test -Dsurefire.suiteXmlFiles=src/main/resources/testrunner/testng_sanity.xml"
+                    sh "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resource/testrunner/testng_sanity.xml"
                     
                 }
             }
