@@ -33,7 +33,6 @@ public class DriverFactory {
 	public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<WebDriver>();
 	public static final Logger log = Logger.getLogger(String.valueOf(DriverFactory.class));
 
-
 	/**
 	 * This method is used to initialize the driver and pass the browser
 	 * 
@@ -42,34 +41,84 @@ public class DriverFactory {
 	 */
 
 	public WebDriver initDriver(Properties prop) {
+//		if(prop.getProperty("browser") == null) {
+//			String browserName = System.getProperty("browser");
+//		}
 		String browserName = prop.getProperty("browser");
+		String browserVersion = prop.getProperty("browserversion");
+		log.info("browser name : " + browserName + " and browserversion: " + browserVersion);
+
 		highlight = prop.getProperty("highlight");
-		System.out.println("Browser Name is: " + browserName);
+
+		System.out.println("browser name is : " + browserName);
 		optionsManager = new OptionsManager(prop);
+		if (browserName.equalsIgnoreCase("chrome")) {
 
-		if (browserName.equalsIgnoreCase("Chrome")) {
-			WebDriverManager.chromedriver().setup();
-			// driver = new ChromeDriver(optionsManager.getChromeOptions());
-			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				log.info("running test on remote");
+				init_remoteDriver("chrome", browserVersion);
+			} else {
+				log.info("running test on local");
+				WebDriverManager.chromedriver().setup();
+				tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			}
 
-		} else if (browserName.equalsIgnoreCase("firefox")) {
+		}
+
+		else if (browserName.equalsIgnoreCase("firefox")) {
 			WebDriverManager.firefoxdriver().setup();
-			// driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
-			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				init_remoteDriver("firefox", browserVersion);
+			} else {
+				WebDriverManager.firefoxdriver().setup();
+				tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			}
 
 		} else if (browserName.equalsIgnoreCase("safari")) {
-			// driver = new SafariDriver();
 			tlDriver.set(new SafariDriver());
+		}
 
-		} else {
-			System.out.println("Browser not available" + browserName);
+		else {
+			System.out.println("please pass the right browserName : " + browserName);
 		}
 
 		getDriver().manage().deleteAllCookies();
 		getDriver().manage().window().maximize();
 
 		getDriver().get(prop.getProperty("url"));
+
 		return getDriver();
+
+	}
+
+	private void init_remoteDriver(String browserName, String browserVersion) {
+
+		System.out.println("running test on remote with browser: " + browserName + ":" + browserVersion);
+
+		if (browserName.equals("chrome")) {
+			DesiredCapabilities caps = DesiredCapabilities.chrome();
+			caps.setCapability("browserName", "chrome");
+			caps.setCapability("browserVersion", browserVersion);
+			caps.setCapability("enableVNC", true);
+			caps.setCapability(ChromeOptions.CAPABILITY, optionsManager.getChromeOptions());
+			try {
+				tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), caps));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		} else if (browserName.equals("firefox")) {
+			DesiredCapabilities caps = DesiredCapabilities.firefox();
+			caps.setCapability("browserName", "firefox");
+			caps.setCapability("browserVersion", browserVersion);
+			caps.setCapability("enableVNC", true);
+			caps.setCapability(FirefoxOptions.FIREFOX_OPTIONS, optionsManager.getFirefoxOptions());
+			try {
+				tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), caps));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
