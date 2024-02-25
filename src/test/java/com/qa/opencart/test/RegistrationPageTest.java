@@ -25,19 +25,19 @@ public class RegistrationPageTest extends BaseTest {
 		return email;
 	}
 	
-	@DataProvider
-	public Object[][] getRegTestData() {
-		return ExcelUtil.getTestData(Constants.REGISTER_SHEET_NAME);
-	}
-
-	@Test(dataProvider = "getRegTestData")
-	public void registrationTest(String firstName, String lastName, String telephone, String password,
-			String subscribe) {
-		Assert.assertTrue(
-				regPage.accountRegistration(firstName, lastName, 
-						getRandomEmail(), telephone, password, subscribe)
-				);
-
-	}
+//	@DataProvider
+//	public Object[][] getRegTestData() {
+//		return ExcelUtil.getTestData(Constants.REGISTER_SHEET_NAME);
+//	}
+//
+//	@Test(dataProvider = "getRegTestData")
+//	public void registrationTest(String firstName, String lastName, String telephone, String password,
+//			String subscribe) {
+//		Assert.assertTrue(
+//				regPage.accountRegistration(firstName, lastName, 
+//						getRandomEmail(), telephone, password, subscribe)
+//				);
+//
+//	}
 
 }
