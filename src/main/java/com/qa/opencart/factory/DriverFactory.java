@@ -136,7 +136,7 @@ public class DriverFactory {
 		return tlDriver.get();
 	}
 
-	public Properties initProp() {
+	public Properties initProperties() {
 
 		// mvn clean install -Denv="qa"
 		// mvn clean install

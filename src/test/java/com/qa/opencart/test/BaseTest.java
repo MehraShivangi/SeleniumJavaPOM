@@ -31,7 +31,7 @@ public class BaseTest {
 	public void setUp() {
 		df = new DriverFactory();
 		softAssert = new SoftAssert();
-		//prop = df.initProperties();
+		prop = df.initProperties();
 		driver = df.initDriver(prop);
 		loginPage = new LoginPage(driver);
 		
