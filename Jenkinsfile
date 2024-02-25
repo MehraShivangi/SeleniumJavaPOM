@@ -38,7 +38,7 @@ pipeline
         stage('Regression Automation Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
+                    git 'https://github.com/MehraShivangi/SeleniumJavaPOM'
                     sh "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resource/testrunner/testng_regression.xml"
                     
                 }
@@ -82,7 +82,7 @@ pipeline
         stage('Sanity Automation Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    git 'https://github.com/MehraShivangi/SeleniumJavaPOM.git'
+                    git 'https://github.com/MehraShivangi/SeleniumJavaPOM'
                     sh "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resource/testrunner/testng_sanity.xml"
                     
                 }
